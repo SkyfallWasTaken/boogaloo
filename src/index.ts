@@ -15,8 +15,15 @@ const db = new Keyv(
   })
 );
 
-app.command("/mood", async ({ command, ack, respond }) => {
+app.command("/mood1234", async ({ command, ack, respond }) => {
   await ack();
+
+  if (!command.text) {
+    await respond(
+      "You need to put a mood after the command, like `/mood1234 happy`"
+    );
+    return;
+  }
 
   const slackId = command.user_id;
 
@@ -28,6 +35,12 @@ app.command("/mood", async ({ command, ack, respond }) => {
   } else {
     await db.set(slackId, [command.text]);
   }
+
+  await respond(`:yay: I've logged your mood: *${command.text}*`);
+});
+
+app.command("/mood1234history", async ({ command, ack, respond }) => {
+  await ack();
 });
 
 await app.start();
