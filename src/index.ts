@@ -15,5 +15,20 @@ const db = new Keyv(
   })
 );
 
+app.command("/mood", async ({ command, ack, respond }) => {
+  await ack();
+
+  const slackId = command.user_id;
+
+  const oldValues = await db.get(slackId);
+
+  if (oldValues) {
+    console.log(oldValues);
+    await db.set(slackId, [...oldValues, command.text]);
+  } else {
+    await db.set(slackId, [command.text]);
+  }
+});
+
 await app.start();
 console.log("We're up and running :)");
