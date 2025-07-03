@@ -41,6 +41,18 @@ app.command("/mood1234", async ({ command, ack, respond }) => {
 
 app.command("/mood1234history", async ({ command, ack, respond }) => {
   await ack();
+
+  const feelings = await db.get(command.user_id);
+  if (!feelings) {
+    await respond("Log some feelings first with `/mood1234`!");
+    return;
+  }
+
+  await respond(
+    `Here are your feelings: ${feelings
+      .map((f: string) => `*${f}*`)
+      .join(", ")}`
+  );
 });
 
 await app.start();
