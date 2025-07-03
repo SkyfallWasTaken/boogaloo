@@ -15,6 +15,18 @@ const db = new Keyv(
   })
 );
 
+const feelingsEmojis = {
+  happy: ":smile:",
+  sad: ":cry:",
+  angry: ":angry:",
+  surprised: ":open-mouth:",
+  confused: ":confused:",
+  excited: ":star-struck:",
+  bored: ":yawning-face:",
+  anxious: ":nervous:",
+  relaxed: ":relaxed:",
+};
+
 app.command("/mood1234", async ({ command, ack, respond }) => {
   await ack();
 
@@ -50,7 +62,7 @@ app.command("/mood1234history", async ({ command, ack, respond }) => {
 
   await respond(
     `Here are your feelings: ${feelings
-      .map((f: string) => `*${f}*`)
+      .map((f: string) => `${feelingsEmojis[f] || ":aga:"} *${f}*`)
       .join(", ")}`
   );
 });
